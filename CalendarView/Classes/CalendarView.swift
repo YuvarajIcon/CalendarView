@@ -102,6 +102,18 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
     
     //MARK: PUBLIC METHODS
     
+    /// Returns number of weeks in a given month index.
+    ///
+    /// Use this method if you plan to have your own expandable collectionview layout.
+    /// - Parameter sectionIndex: Index value for a month.
+    /// - Returns: The number of weeks.
+    public func numberOfWeeks(for sectionIndex: Int) -> CGFloat {
+        guard let weekArray = self.configuration.calendar.range(of: .weekOfMonth, in: .month, for: self.months[sectionIndex].metaData.firstDay) else {
+            return 0
+        }
+        return CGFloat(weekArray.count)
+    }
+    
     /// Scrolls the calendar to the next month.
     /// - Note: If this is called when the `isLastDisplayableMonth` for the ``displayedMonth`` is `true`, the calendar will not scroll.
     public func moveToNextMonth() {
@@ -299,20 +311,13 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
             self.isPagingEnabled = true
         }
         
-        func numberOfWeeks(for sectionIndex: Int) -> CGFloat {
-            guard let weekArray = self.configuration.calendar.range(of: .weekOfMonth, in: .month, for: self.months[sectionIndex].metaData.firstDay) else {
-                return 0
-            }
-            return CGFloat(weekArray.count)
-        }
-        
         let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0 / 7.0),
                                                   heightDimension: .fractionalHeight(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             
-            let numberOfWeeks = numberOfWeeks(for: sectionIndex)
+            let numberOfWeeks = self.numberOfWeeks(for: sectionIndex)
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                    heightDimension: .fractionalHeight(1.0 / numberOfWeeks))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
@@ -330,6 +335,11 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
                                                                             elementKind: "header",
                                                                             alignment: .top)
             
+            if #available(iOS 16.0, *) {
+                section.supplementaryContentInsetsReference = .automatic
+            } else {
+                section.supplementariesFollowContentInsets = false
+            }
             section.contentInsets = .init(top: 100, leading: 0, bottom: 0, trailing: 0)
             section.boundarySupplementaryItems = [sectionHeader]
             return section

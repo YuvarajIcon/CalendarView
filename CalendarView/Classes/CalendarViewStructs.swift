@@ -12,7 +12,7 @@ public struct CalendarViewConfiguration {
     /// Setting this to `true` will generate start of the next month, so that the section is fully filled with days.
     public let fillNextMonthDates: Bool
     
-    /// Defines the layout behavior. If layout is `nil`, this will also modify the default layout of ``CalendarView``.
+    /// Defines the layout behavior. If ``layout`` is `nil`, this will also modify the default layout of ``CalendarView``.
     public let layoutBehavior: LayoutBehavior
     
     /// The layout for `CalendarView` to use.
