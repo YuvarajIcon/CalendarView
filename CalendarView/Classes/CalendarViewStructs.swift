@@ -28,7 +28,7 @@ public struct CalendarViewConfiguration {
     public let endDate: Date
     
     /// The default configuration.
-    static var DefaultConfiguration: CalendarViewConfiguration {
+    public static var DefaultConfiguration: CalendarViewConfiguration {
         let startDate = Date()
         let endDate = Calendar.current.date(byAdding: .year, value: 1, to: startDate)!
         return CalendarViewConfiguration(fillNextMonthDates: true,
@@ -50,7 +50,7 @@ public struct LayoutBehavior {
     
     
     /// The default behavior.
-    static var Default: LayoutBehavior {
+    public static var Default: LayoutBehavior {
         return LayoutBehavior(scrollDirection: .horizontal, scrollBehavior: .month)
     }
 }

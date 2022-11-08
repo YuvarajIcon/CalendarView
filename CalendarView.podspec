@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CalendarView'
-  s.version          = '0.1.1'
+  s.version          = '0.1.2'
   s.summary          = 'A CalendarView for iOS and macOS.'
 
   s.description      = 'A CalendarView made with UICollectionView that lets *you* define how it looks and feels.'
