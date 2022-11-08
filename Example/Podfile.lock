@@ -1,0 +1,16 @@
+PODS:
+  - CalendarView (0.1.0)
+
+DEPENDENCIES:
+  - CalendarView (from `../`)
+
+EXTERNAL SOURCES:
+  CalendarView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  CalendarView: ecb8e0626f55bef0597a67c5c39cc6d4df08eeec
+
+PODFILE CHECKSUM: b481c50999936e73be48ce4a2208d48c76870130
+
+COCOAPODS: 1.11.3
