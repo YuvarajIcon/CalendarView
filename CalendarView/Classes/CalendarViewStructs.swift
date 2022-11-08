@@ -37,6 +37,15 @@ public struct CalendarViewConfiguration {
                                          startDate: startDate,
                                          endDate: endDate)
     }
+    
+    public init(fillNextMonthDates: Bool, layoutBehavior: LayoutBehavior, layout: UICollectionViewLayout? = nil, calendar: Calendar, startDate: Date, endDate: Date) {
+        self.fillNextMonthDates = fillNextMonthDates
+        self.layoutBehavior = layoutBehavior
+        self.layout = layout
+        self.calendar = calendar
+        self.startDate = startDate
+        self.endDate = endDate
+    }
 }
 
 /// The behavior of layout.
@@ -52,6 +61,11 @@ public struct LayoutBehavior {
     /// The default behavior.
     public static var Default: LayoutBehavior {
         return LayoutBehavior(scrollDirection: .horizontal, scrollBehavior: .month)
+    }
+    
+    public init(scrollDirection: UICollectionView.ScrollDirection, scrollBehavior: ScrollingBehavior) {
+        self.scrollDirection = scrollDirection
+        self.scrollBehavior = scrollBehavior
     }
 }
 
