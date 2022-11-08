@@ -10,22 +10,22 @@ import Foundation
 /// The configuration for ``CalendarView``.
 public struct CalendarViewConfiguration {
     /// Setting this to `true` will generate start of the next month, so that the section is fully filled with days.
-    let fillNextMonthDates: Bool
+    public let fillNextMonthDates: Bool
     
     /// Defines the layout behavior. If layout is `nil`, this will also modify the default layout of ``CalendarView``.
-    let layoutBehavior: LayoutBehavior
+    public let layoutBehavior: LayoutBehavior
     
     /// The layout for `CalendarView` to use.
-    var layout: UICollectionViewLayout? = nil
+    public var layout: UICollectionViewLayout? = nil
     
     /// The calendar for `CalendarView` to use.
-    let calendar: Calendar
+    public let calendar: Calendar
     
     /// The starting date for date generation of ``CalendarView``.
-    let startDate: Date
+    public let startDate: Date
     
     /// The ending date for date generation of ``CalendarView``.
-    let endDate: Date
+    public let endDate: Date
     
     /// The default configuration.
     static var DefaultConfiguration: CalendarViewConfiguration {
@@ -42,11 +42,11 @@ public struct CalendarViewConfiguration {
 /// The behavior of layout.
 public struct LayoutBehavior {
     /// The scroll direction of ``CalendarView``.
-    let scrollDirection: UICollectionView.ScrollDirection
+    public let scrollDirection: UICollectionView.ScrollDirection
     
     
     /// The scroll behavior of ``CalendarView``.
-    let scrollBehavior: ScrollingBehavior
+    public let scrollBehavior: ScrollingBehavior
     
     
     /// The default behavior.
@@ -59,35 +59,35 @@ public struct LayoutBehavior {
 public struct MonthMetadata {
     /// The actual number of days.
     /// - Note: This doesn't include pre or post fill dates.
-    let numberOfDays: Int
+    public let numberOfDays: Int
     
     
     /// The first day in the month.
     /// - Note: This will be the date with the end time of previous month. e.g., if current month is January, then this will be, 31st Decemember 24:00. i.e., the ``lastDay`` of the previous month. To perform calculations with this use `datecomponents` method, do not use any date formatters or add a day to this value.
-    let firstDay: Date
+    public let firstDay: Date
     
     /// The last day of the month.
     /// - Note: This will be the date with the end time of the current month. i.e., this will be the ``firstDay`` of the next month. To perform calculations with this use `datecomponents` method, do not use any date formatters or add a day to this value.
-    let lastDay: Date
+    public let lastDay: Date
     
     /// The value of first week day of the month. This determines how many days to generate from previous month.
-    let firstDayWeekday: Int
+    public let firstDayWeekday: Int
 }
 
 /// The day data for ``CalendarView``.
 public struct CalendarDay {
     /// The date of the day.
     /// - Note: This will the end time of the previous day. i.e., if current date is 1st January, this will be 31st December 24:00. To perform calculations with this use `datecomponents` method, do not use any date formatters, or add a day to this value.
-    let date: Date
+    public let date: Date
     
     /// The date number in string format. Though the `Date` value is end of time of previous day, this is calculated by adding 1 day to the `Date`.
-    let number: String
+    public let number: String
     
     /// A boolean value indicating whether this is the current day or not.
-    let isToday: Bool
+    public let isToday: Bool
     
     /// A boolean value indicating whether this belongs to the currently displayed month or not.
-    let isWithinDisplayedMonth: Bool
+    public let isWithinDisplayedMonth: Bool
 }
 
 
@@ -95,30 +95,30 @@ public struct CalendarDay {
 /// - Note: All date values inside this will be the end time of the day. i.e., 24:00.
 public struct CalendarMonth {
     /// The name of the month.
-    let name: MonthsOfYear
+    public let name: MonthsOfYear
     
     /// The number of the month ranging from 1 to 12.
-    let number: Int
+    public let number: Int
     
     /// The index of the month.
     /// - Note: This is not the actual month number (1 - 12), rather, the positional value in the total number of months the ``CalendarView`` uses. If you want the month number in laymen terms, use ``number`` instead.
-    let index: Int
+    public let index: Int
     
     /// The array of ``CalendarDay`` for this month.
     /// - Note: This also includes pre and post generated days.
-    let days: [CalendarDay]
+    public let days: [CalendarDay]
     
     /// The year this month belongs to.
-    let year: Int
+    public let year: Int
     
     /// The meta-data of this month.
-    let metaData: MonthMetadata
+    public let metaData: MonthMetadata
     
     /// A boolean value indicating whether this is the first month in the generated range or not.
-    let isFirstDisplayableMonth: Bool
+    public let isFirstDisplayableMonth: Bool
     
     /// A boolean value indicating whether this is the last month in the generated range or not.
-    let isLastDisplayableMonth: Bool
+    public let isLastDisplayableMonth: Bool
 }
 
 public enum ScrollingBehavior {
