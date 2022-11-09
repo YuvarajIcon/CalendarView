@@ -116,7 +116,8 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
     
     /// Scrolls the calendar to the next month.
     /// - Note: If this is called when the `isLastDisplayableMonth` for the ``displayedMonth`` is `true`, the calendar will not scroll.
-    public func moveToNextMonth() {
+    /// - Parameter animate: A boolean value indicating whether to apply scrolling animation or not. Default is true.
+    public func moveToNextMonth(animate: Bool = true) {
         guard let displayedMonth = displayedMonth else {
             return
         }
@@ -124,12 +125,13 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
             return
         }
         let scrollPosition: ScrollPosition = self.configuration.layoutBehavior.scrollDirection == .horizontal ? .centeredHorizontally : .centeredVertically
-        self.scrollToItem(at: IndexPath(row: 0, section: displayedMonth.index + 1), at: scrollPosition, animated: true )
+        self.scrollToItem(at: IndexPath(row: 0, section: displayedMonth.index + 1), at: scrollPosition, animated: animate)
     }
     
     /// Scrolls the calendar to the previous month.
     /// - Note: If this is called when the `isFirstDisplayableMonth` for the ``displayedMonth`` is `true`, the calendar will not scroll.
-    public func moveToPreviousMonth() {
+    /// - Parameter animate: A boolean value indicating whether to apply scrolling animation or not. Default is true.
+    public func moveToPreviousMonth(animate: Bool = true) {
         guard let displayedMonth = displayedMonth else {
             return
         }
@@ -137,13 +139,15 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
             return
         }
         let scrollPosition: ScrollPosition = self.configuration.layoutBehavior.scrollDirection == .horizontal ? .centeredHorizontally : .centeredVertically
-        self.scrollToItem(at: IndexPath(row: 0, section: displayedMonth.index - 1), at: scrollPosition, animated: true )
+        self.scrollToItem(at: IndexPath(row: 0, section: displayedMonth.index - 1), at: scrollPosition, animated: animate)
     }
     
     /// Scrolls the calendar to the specified date.
-    /// - Parameter date: The date to scroll to.
+    /// - Parameters:
+    ///   - date: The date to scroll to.
+    ///   - animate: A boolean value indicating whether to apply scrolling animation or not. Default is true.
     /// - Note: If the given date is not within calendar range, the calendar will not scroll.
-    public func moveTo(date: Date) {
+    public func moveTo(date: Date, animate: Bool = true) {
         guard let nextDay = configuration.calendar.date(byAdding: .day, value: 1, to: date) else {
             return
         }
@@ -158,7 +162,7 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
         }
         let indexPath = IndexPath(row: indexTuple.rowIndex, section: indexTuple.sectionIndex)
         let scrollPosition: ScrollPosition = self.configuration.layoutBehavior.scrollDirection == .horizontal ? .centeredHorizontally : .centeredVertically
-        self.scrollToItem(at: indexPath, at: scrollPosition, animated: true)
+        self.scrollToItem(at: indexPath, at: scrollPosition, animated: animate)
     }
     
     /// Scrolls the calendar to the specified month.
@@ -167,9 +171,10 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
     ///   - offset: This specifies the ith iteration of the given month to scroll to.
     ///   Ex: If you have given `startDate` and `endDate` such that the range is 5 years, it means there will be 5 number of january iterations inside this range.
     ///   If you give the offset as 2 and month as january, the calendar will scroll to the 2nd iteration of january out of those 5 iterations.
+    ///   - animate: A boolean value indicating whether to apply scrolling animation or not. Default is true.
     /// - Note: If the month is not within calendar range, the calendar will not scroll.
     /// - Important: The offset is always positive.
-    public func moveTo(month: MonthsOfYear, @Positive offset: Int = 0) {
+    public func moveTo(month: MonthsOfYear, @Positive offset: Int = 0, animate: Bool = true) {
         let indicesOfMonth = self.months.enumerated().filter({ $0.element.name == month }).map({ $0.offset })
         guard indicesOfMonth.count > offset - 1, self.months.count > indicesOfMonth[offset - 1] else {
             return
@@ -177,19 +182,21 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
         let sectionIndex = indicesOfMonth[offset - 1]
         let indexPathForMonth = IndexPath(row: 0, section: sectionIndex)
         let scrollPosition: ScrollPosition = self.configuration.layoutBehavior.scrollDirection == .horizontal ? .centeredHorizontally : .centeredVertically
-        self.scrollToItem(at: indexPathForMonth, at: scrollPosition, animated: true)
+        self.scrollToItem(at: indexPathForMonth, at: scrollPosition, animated: animate)
     }
 
     /// Scrolls the calendar to the specified year.
-    /// - Parameter year: The year to scroll to.
+    /// - Parameters:
+    ///   - year: The year to scroll to.
+    ///   - animate: A boolean value indicating whether to apply scrolling animation or not. Default is true.
     /// - Note: If the year provided is not within calendar range, the calendar will not scroll.
-    public func moveTo(year: Int) {
+    public func moveTo(year: Int, animate: Bool = true) {
         guard let sectionIndex = self.months.firstIndex(where: { $0.year == year }) else {
             return
         }
         let indexPathForMonth = IndexPath(row: 0, section: sectionIndex)
         let scrollPosition: ScrollPosition = self.configuration.layoutBehavior.scrollDirection == .horizontal ? .centeredHorizontally : .centeredVertically
-        self.scrollToItem(at: indexPathForMonth, at: scrollPosition, animated: true)
+        self.scrollToItem(at: indexPathForMonth, at: scrollPosition, animated: animate)
     }
     
     //MARK: UICOLLECTIONVIEW DELEGATE & DATASOURCE

@@ -11,11 +11,10 @@ import CalendarView
 
 class ViewController: UIViewController, CalendarDataSource, CalendarDelegate {
     
+    @IBOutlet weak var calendarView: CalendarView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Intialize calendarview.
-        let calendarView = CalendarView()
         calendarView.translatesAutoresizingMaskIntoConstraints = false
         
         // Register whichever cell classes you want.
@@ -25,15 +24,16 @@ class ViewController: UIViewController, CalendarDataSource, CalendarDelegate {
         // Assign delegates.
         calendarView.calendarDataSource = self
         calendarView.calendarDelegate = self
-        
-        // Add calendar view to your view.
-        self.view.addSubview(calendarView)
-        NSLayoutConstraint.activate([
-            calendarView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            calendarView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            calendarView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            calendarView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-        ])
+    }
+    
+    // Move backwards
+    @IBAction func backPressed(_ sender: UIButton) {
+        calendarView.moveToPreviousMonth(animate: true)
+    }
+    
+    // Move forwards
+    @IBAction func nextPressed(_ sender: UIButton) {
+        calendarView.moveToNextMonth(animate: true)
     }
     
     // Use your own configuration or pass the default one.
