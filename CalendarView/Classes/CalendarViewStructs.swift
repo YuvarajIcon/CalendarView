@@ -135,8 +135,12 @@ public struct CalendarMonth {
     public let isLastDisplayableMonth: Bool
 }
 
+/// The scrolling behavior for ``CalendarView``.
 public enum ScrollingBehavior {
+    /// Smooth scrolling/
     case continous
+    
+    /// Stops at each month.
     case month
 }
 

@@ -332,7 +332,7 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
             let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                           heightDimension: .estimated(100))
             let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerFooterSize,
-                                                                            elementKind: "header",
+                                                                            elementKind: CalendarHeaderView.elementKind,
                                                                             alignment: .top)
             
             if #available(iOS 16.0, *) {
@@ -340,7 +340,9 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
             } else {
                 section.supplementariesFollowContentInsets = false
             }
-            section.contentInsets = .init(top: 100, leading: 0, bottom: 0, trailing: 0)
+            if self.configuration.layoutBehavior.scrollDirection == .horizontal {
+                section.contentInsets = .init(top: 100, leading: 0, bottom: 0, trailing: 0)
+            }
             section.boundarySupplementaryItems = [sectionHeader]
             return section
             
