@@ -80,24 +80,35 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
         set {}
     }
     
+    public override func didMoveToWindow() {
+        super.didMoveToWindow()
+        self.calendarDelegate?.calendar(self, didMonthChange: self.months[0])
+    }
+    
     //MARK: INITIALIZERS
     
     public init() {
         super.init(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         super.dataSource = self
         super.delegate = self
+        self.showsVerticalScrollIndicator = false
+        self.showsHorizontalScrollIndicator = false
     }
     
     public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         super.dataSource = self
         super.delegate = self
+        self.showsVerticalScrollIndicator = false
+        self.showsHorizontalScrollIndicator = false
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         super.dataSource = self
         super.delegate = self
+        self.showsVerticalScrollIndicator = false
+        self.showsHorizontalScrollIndicator = false
     }
     
     //MARK: PUBLIC METHODS
@@ -125,7 +136,10 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
             return
         }
         let scrollPosition: ScrollPosition = self.configuration.layoutBehavior.scrollDirection == .horizontal ? .centeredHorizontally : .centeredVertically
-        self.scrollToItem(at: IndexPath(row: 0, section: displayedMonth.index + 1), at: scrollPosition, animated: animate)
+        let indexPath = IndexPath(row: 0, section: displayedMonth.index + 1)
+        self.scrollToItem(at: indexPath, at: scrollPosition, animated: animate)
+        let nextMonth = self.months[indexPath.section]
+        calendarDelegate?.calendar(self, didMonthChange: nextMonth)
     }
     
     /// Scrolls the calendar to the previous month.
@@ -139,7 +153,10 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
             return
         }
         let scrollPosition: ScrollPosition = self.configuration.layoutBehavior.scrollDirection == .horizontal ? .centeredHorizontally : .centeredVertically
-        self.scrollToItem(at: IndexPath(row: 0, section: displayedMonth.index - 1), at: scrollPosition, animated: animate)
+        let indexPath = IndexPath(row: 0, section: displayedMonth.index - 1)
+        self.scrollToItem(at: indexPath, at: scrollPosition, animated: animate)
+        let previousMonth = self.months[indexPath.section]
+        calendarDelegate?.calendar(self, didMonthChange: previousMonth)
     }
     
     /// Scrolls the calendar to the specified date.
@@ -153,7 +170,7 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
         }
         let startOfNextDay = configuration.calendar.startOfDay(for: nextDay)
         guard let indexTuple = self.months.map({ $0.days }).enumerated().compactMap({ enumeratedArray -> (sectionIndex: Int, rowIndex: Int)? in
-            guard let dayIndex = enumeratedArray.element.firstIndex(where: { $0.date == startOfNextDay }) else {
+            guard let dayIndex = enumeratedArray.element.firstIndex(where: { $0.date == startOfNextDay && $0.isWithinDisplayedMonth }) else {
                 return nil
             }
             return (enumeratedArray.offset, dayIndex)
@@ -163,6 +180,8 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
         let indexPath = IndexPath(row: indexTuple.rowIndex, section: indexTuple.sectionIndex)
         let scrollPosition: ScrollPosition = self.configuration.layoutBehavior.scrollDirection == .horizontal ? .centeredHorizontally : .centeredVertically
         self.scrollToItem(at: indexPath, at: scrollPosition, animated: animate)
+        let month = self.months[indexPath.section]
+        calendarDelegate?.calendar(self, didMonthChange: month)
     }
     
     /// Scrolls the calendar to the specified month.
@@ -183,6 +202,8 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
         let indexPathForMonth = IndexPath(row: 0, section: sectionIndex)
         let scrollPosition: ScrollPosition = self.configuration.layoutBehavior.scrollDirection == .horizontal ? .centeredHorizontally : .centeredVertically
         self.scrollToItem(at: indexPathForMonth, at: scrollPosition, animated: animate)
+        let month = self.months[indexPathForMonth.section]
+        calendarDelegate?.calendar(self, didMonthChange: month)
     }
 
     /// Scrolls the calendar to the specified year.
@@ -197,6 +218,8 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
         let indexPathForMonth = IndexPath(row: 0, section: sectionIndex)
         let scrollPosition: ScrollPosition = self.configuration.layoutBehavior.scrollDirection == .horizontal ? .centeredHorizontally : .centeredVertically
         self.scrollToItem(at: indexPathForMonth, at: scrollPosition, animated: animate)
+        let month = self.months[indexPathForMonth.section]
+        calendarDelegate?.calendar(self, didMonthChange: month)
     }
     
     //MARK: UICOLLECTIONVIEW DELEGATE & DATASOURCE
