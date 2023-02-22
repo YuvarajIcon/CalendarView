@@ -165,12 +165,9 @@ public class CalendarView: UICollectionView, UICollectionViewDataSource, UIColle
     ///   - animate: A boolean value indicating whether to apply scrolling animation or not. Default is true.
     /// - Note: If the given date is not within calendar range, the calendar will not scroll.
     public func moveTo(date: Date, animate: Bool = true) {
-        guard let nextDay = configuration.calendar.date(byAdding: .day, value: 1, to: date) else {
-            return
-        }
-        let startOfNextDay = configuration.calendar.startOfDay(for: nextDay)
+        let startOfDay = configuration.calendar.startOfDay(for: date)
         guard let indexTuple = self.months.map({ $0.days }).enumerated().compactMap({ enumeratedArray -> (sectionIndex: Int, rowIndex: Int)? in
-            guard let dayIndex = enumeratedArray.element.firstIndex(where: { $0.date == startOfNextDay && $0.isWithinDisplayedMonth }) else {
+            guard let dayIndex = enumeratedArray.element.firstIndex(where: { $0.date == startOfDay && $0.isWithinDisplayedMonth }) else {
                 return nil
             }
             return (enumeratedArray.offset, dayIndex)
